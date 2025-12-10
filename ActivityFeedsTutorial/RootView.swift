@@ -14,7 +14,12 @@ struct RootView: View {
             if isConnected {
                 TabView {
                     Tab("Home", systemImage: "house") {
-                        HomeView()
+                        HomeView(
+                            timeline: client.feed(
+                                group: "timeline",
+                                id: client.user.id
+                            )
+                        )
                     }
                     Tab("Explore", systemImage: "magnifyingglass") {
                         ExploreView()

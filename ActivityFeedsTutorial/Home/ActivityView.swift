@@ -2,32 +2,36 @@
 // Copyright © 2025 Stream.io Inc. All rights reserved.
 //
 
+import StreamFeeds
 import SwiftUI
 
 struct ActivityView: View {
+    let activityData: ActivityData
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                AvatarView(url: nil)
-                VStack(alignment: .leading) {
+                AvatarView(url: activityData.user.imageURL)
+                VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text("Name")
+                        Text(activityData.user.name ?? activityData.user.id)
                             .font(.subheadline)
                             .foregroundStyle(.primary)
-                        Text(Date().formatted(date: .long, time: .shortened))
+                        Text(activityData.createdAt.formatted(date: .abbreviated, time: .shortened))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Text("Text")
+                    Text(activityData.text ?? "")
                 }
                 Spacer()
             }
             HStack(spacing: 16) {
-                Button("0", systemImage: "bubble") {}
-                Button("0", systemImage: "heart") {}
+                Button("\(activityData.commentCount)", systemImage: "bubble") {}
+                Button("\(activityData.reactionCount)", systemImage: "heart") {}
             }
             .foregroundStyle(.secondary)
             .padding(4)
         }
+        .padding(.horizontal, 8)
     }
 }
