@@ -12,7 +12,12 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                ActivityComposerView()
+                ActivityComposerView(
+                    feed: client.feed(
+                        group: "user",
+                        id: client.user.id
+                    )
+                )
                 Divider()
                 ActivityListView(feed: timeline)
             }
