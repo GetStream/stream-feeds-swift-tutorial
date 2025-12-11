@@ -22,7 +22,12 @@ struct RootView: View {
                         )
                     }
                     Tab("Explore", systemImage: "magnifyingglass") {
-                        ExploreView()
+                        ExploreView(
+                            feed: client.feed(
+                                group: "foryou",
+                                id: client.user.id
+                            )
+                        )
                     }
                 }
             } else {
