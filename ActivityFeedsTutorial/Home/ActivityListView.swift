@@ -19,7 +19,7 @@ struct ActivityListView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(state.activities) { activityData in
-                        ActivityView(activityData: activityData)
+                        ActivityView(activityData: activityData, feedId: feed.feed)
                     }
                     if state.canLoadMoreActivities {
                         Button("Load More") {
