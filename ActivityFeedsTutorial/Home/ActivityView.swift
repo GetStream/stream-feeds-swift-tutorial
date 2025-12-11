@@ -6,6 +6,7 @@ import StreamFeeds
 import SwiftUI
 
 struct ActivityView: View {
+    @Environment(\.feedsClient) var client
     let activityData: ActivityData
     
     var body: some View {
@@ -28,6 +29,9 @@ struct ActivityView: View {
             HStack(spacing: 16) {
                 Button("\(activityData.commentCount)", systemImage: "bubble") {}
                 Button("\(activityData.reactionCount)", systemImage: "heart") {}
+                if let currentFeed = activityData.currentFeed, currentFeed.feed != FeedId(group: "user", id: client.user.id) {
+                    ToggleFollowButton(feedData: currentFeed)
+                }
             }
             .foregroundStyle(.secondary)
             .padding(4)
