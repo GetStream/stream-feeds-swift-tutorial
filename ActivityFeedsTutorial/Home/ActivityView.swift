@@ -11,9 +11,13 @@ struct ActivityView: View {
     let feedId: FeedId
     @State private var showsComments = false
     
+    var imageURLs: [URL] {
+        activityData.attachments.compactMap(\.imageUrl).compactMap { URL(string: $0) }
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
+            HStack(alignment: .top) {
                 AvatarView(url: activityData.user.imageURL)
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
@@ -24,7 +28,16 @@ struct ActivityView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Text(activityData.text ?? "")
+                    if let text = activityData.text, !text.isEmpty {
+                        Text(text)
+                    }
+                    
+                    ForEach(imageURLs, id: \.absoluteString) { url in
+                        ThumbnailImage(
+                            url: url,
+                            size: CGSize(width: 200, height: 150)
+                        )
+                    }
                 }
                 Spacer()
             }
