@@ -9,6 +9,7 @@ struct ActivityView: View {
     @Environment(\.feedsClient) var client
     let activityData: ActivityData
     let feedId: FeedId
+    @State private var showsComments = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -28,7 +29,9 @@ struct ActivityView: View {
                 Spacer()
             }
             HStack(spacing: 16) {
-                Button("\(activityData.commentCount)", systemImage: "bubble") {}
+                Button("\(activityData.commentCount)", systemImage: "bubble") {
+                    showsComments = true
+                }
                 Button(
                     "\(activityData.reactionGroups["heart"]?.count ?? 0)",
                     systemImage: activityData.ownReactions.isEmpty ? "heart" : "heart.fill"
@@ -55,5 +58,21 @@ struct ActivityView: View {
             .padding(4)
         }
         .padding(.horizontal, 8)
+        .sheet(isPresented: $showsComments) {
+            CommentListView(
+                activity: client.activity(
+                    for: activityData.id,
+                    in: feedId
+                ),
+                commentList: client.activityCommentList(
+                    for: .init(
+                        objectId: activityData.id,
+                        objectType: "activity"
+                    )
+                )
+            )
+            .presentationDetents([.fraction(0.75)])
+            .presentationDragIndicator(.visible)
+        }
     }
 }
