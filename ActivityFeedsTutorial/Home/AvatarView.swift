@@ -8,7 +8,7 @@ struct AvatarView: View {
     let url: URL?
     
     var body: some View {
-        AsyncImage(url: nil) { image in
+        AsyncImage(url: url) { image in
             image
                 .resizable()
                 .aspectRatio(contentMode: .fill)
